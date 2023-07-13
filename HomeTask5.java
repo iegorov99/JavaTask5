@@ -1,7 +1,12 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
+
 
 public class HomeTask5{
     // Реализуйте структуру телефонной книги с помощью HashMap.
@@ -16,10 +21,6 @@ public class HomeTask5{
     static void interface1(Map<String, LinkedList<Integer>> phonebook){
         System.out.print("\033[H\033[J");
         drowing();
-        // Scanner input = new Scanner(System.in);
-
-        // System.out.print("Choose an action: ");
-        // int user_choice = input.nextInt();
 
         int user_choice = checkNum();
         
@@ -66,12 +67,19 @@ public class HomeTask5{
     static void showContacts(Map<String, LinkedList<Integer>> phonebook){
         System.out.print("\033[H\033[J");
         if (phonebook.isEmpty()) System.out.println("No contacts yet!");
-        // else System.out.println(phonebook);
         else {
-            for (Map.Entry<String, LinkedList<Integer>> entry : phonebook.entrySet()) {
+            ArrayList<Map.Entry<String, LinkedList<Integer>>> phonebookSorted = new ArrayList<>(phonebook.entrySet());
+            Collections.sort(phonebookSorted, new Comparator<Map.Entry<String, LinkedList<Integer>>>() {
+                public int compare(Map.Entry<String, LinkedList<Integer>> obj1, Map.Entry<String, LinkedList<Integer>> obj2){
+                    return obj2.getValue().size() - obj1.getValue().size();
+                }
+            });
+
+            for (Map.Entry<String, LinkedList<Integer>> entry : phonebookSorted) {
                 System.out.println(entry.getKey() + ": " + entry.getValue());
             }
         }
+        
         pause();
     }
 
@@ -178,7 +186,7 @@ public class HomeTask5{
         Scanner input = new Scanner(System.in);
         System.out.print("Choose an action: ");
         int user_choice;
-
+        
         if (input.hasNextInt()){
             user_choice = input.nextInt();
             return user_choice;
@@ -237,4 +245,5 @@ public class HomeTask5{
             return checkIndex(phonebook, surname, message);
         }
     }
+    
 }
